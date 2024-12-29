@@ -1,62 +1,56 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
-header("Access-Control-Allow-Methods: POST");
 
-$host = "localhost";
-$user = "root";
-$password = "";
-$db = "library_db";
+include_once "db_config.php";
 
-$conn = new mysqli($host, $user, $password, $db);
-
-if ($conn->connect_error) {
-    die(json_encode(["message" => "Kết nối thất bại: " . $conn->connect_error]));
-}
-
-// Nhận dữ liệu từ client
 $data = json_decode(file_get_contents("php://input"));
 
 if (isset($data->email) && isset($data->password)) {
     $email = $data->email;
     $password = $data->password;
 
-    // Tìm người dùng với email được cung cấp
-    $stmt = $conn->prepare("SELECT * FROM Users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Kiểm tra tài khoản admin
+    $query_admin = "SELECT * FROM admins WHERE email = ?";
+    $stmt_admin = $conn->prepare($query_admin);
+    $stmt_admin->bind_param("s", $email);
+    $stmt_admin->execute();
+    $result_admin = $stmt_admin->get_result();
 
-    // Kiểm tra kết quả
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        // Kiểm tra mật khẩu
-        if (password_verify($password, $user['password'])) {
-            echo json_encode([
-                "message" => "Đăng nhập thành công",
-                "user" => [
-                    "id" => $user['id'],
-                    "name" => $user['name'],
-                    "date" => $user['date'],
-                    "class" => $user['class'],
-                    "major" => $user['major'],
-                    "faculty" => $user['faculty'],
-                    "school" => $user['school'],
-                    "phone" => $user['phone'],
-                    "email" => $user['email'],
-                    "address" => $user['address']
-                ]
-            ]);
+    if ($result_admin->num_rows > 0) {
+        $admin = $result_admin->fetch_assoc();
+        if (password_verify($password, $admin['password'])) {
+            echo json_encode(["status" => "success", "role" => "admin", "user" => $admin]);
+            exit();
         } else {
-            echo json_encode(["message" => "Mật khẩu không chính xác"]);
+            echo json_encode(["status" => "error", "message" => "Mật khẩu không đúng"]);
+            exit();
         }
-    } else {
-        echo json_encode(["message" => "Email không tồn tại"]);
     }
 
-    $stmt->close();
+    // Kiểm tra tài khoản người dùng
+    $query_user = "SELECT * FROM users WHERE email = ?";
+    $stmt_user = $conn->prepare($query_user);
+    $stmt_user->bind_param("s", $email);
+    $stmt_user->execute();
+    $result_user = $stmt_user->get_result();
+
+    if ($result_user->num_rows > 0) {
+        $user = $result_user->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            echo json_encode(["status" => "success", "role" => "user", "user" => $user]);
+            exit();
+        } else {
+            echo json_encode(["status" => "error", "message" => "Mật khẩu không đúng"]);
+            exit();
+        }
+    }
+
+    echo json_encode(["status" => "error", "message" => "Email không tồn tại"]);
 } else {
-    echo json_encode(["message" => "Dữ liệu không hợp lệ"]);
+    echo json_encode(["status" => "error", "message" => "Vui lòng nhập đầy đủ thông tin!"]);
 }
 
 $conn->close();
