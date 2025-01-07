@@ -154,9 +154,12 @@ const Books = () => {
 
         // Chuyển đổi ngày từ dd/mm/yyyy sang yyyy-mm-dd
         const convertDateToYYYYMMDD = (date) => {
-            const [day, month, year] = date.split("/");
-            return `${year}-${month}-${day}`;
+            if (!date || !/\d{4}-\d{2}-\d{2}/.test(date)) {
+                return date; // Giữ nguyên nếu đã đúng định dạng
+            }
+            return date; // Đã ở dạng `yyyy-mm-dd`
         };
+
 
         const bookData = { ...newBook };
         if (bookData.publication_date) {

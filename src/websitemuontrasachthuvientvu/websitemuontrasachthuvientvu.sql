@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2024 at 06:29 AM
+-- Generation Time: Jan 03, 2025 at 11:06 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -68,11 +68,11 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `image`, `title`, `author`, `publisher_id`, `publication_date`, `category_id`, `language`, `pages`, `description`, `available_quantity`) VALUES
-(42, 'https://res.cloudinary.com/duk8odqun/image/upload/v1734999574/book_images/pwfsvk5efttsftcrfgzz.png', 'Lập Trình C++', 'Bjarne Stroustrup', 17, '0000-00-00', 1, 'Tiếng Việt', 287, 'Cuốn sách này cung cấp kiến thức cơ bản và nâng cao về C++, bao gồm các tính năng hiện đại như C++11, C++14, C++17, hướng dẫn thực hành và kỹ thuật tối ưu hóa mã.', 29),
-(44, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000254/book_images/d7xpshjysgizu6cf24vi.jpg', 'Truyện Kiều', 'Nguyễn Du', 4, '1820-06-15', 17, 'Tiếng Việt', 325, 'Tác phẩm kinh điển của nền văn học Việt Nam, kể về số phận bi thương của nàng Kiều qua 15 năm lưu lạc.', 25),
+(42, 'https://res.cloudinary.com/duk8odqun/image/upload/v1734999574/book_images/pwfsvk5efttsftcrfgzz.png', 'Lập Trình C++', 'Bjarne Stroustrup', 17, '1993-03-12', 1, 'Tiếng Việt', 287, 'Cuốn sách này cung cấp kiến thức cơ bản và nâng cao về C++, bao gồm các tính năng hiện đại như C++11, C++14, C++17, hướng dẫn thực hành và kỹ thuật tối ưu hóa mã.', 29),
+(44, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000254/book_images/d7xpshjysgizu6cf24vi.jpg', 'Truyện Kiều', 'Nguyễn Du', 4, '0000-00-00', 17, 'Tiếng Việt', 325, 'Tác phẩm kinh điển của nền văn học Việt Nam, kể về số phận bi thương của nàng Kiều qua 15 năm lưu lạc.', 25),
 (45, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000430/book_images/ncze7hk0pvwpnyr8flch.jpg', 'Dune', 'Frank Herbert', 19, '0000-00-00', 4, 'Tiếng Anh', 412, 'Dune là tiểu thuyết khoa học viễn tưởng kinh điển, kể về câu chuyện chính trị, tôn giáo, và sinh tồn trên hành tinh sa mạc Arrakis, nơi có nguồn tài nguyên quý giá nhất vũ trụ - \"spice\".', 5),
-(46, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000590/book_images/bvzynwhrvbicbtnczecg.jpg', 'Toán Cao Cấp', 'Nguyễn Đình Trí', 2, '2020-08-15', 2, 'Tiếng Việt', 512, 'Cuốn sách \"Toán Cao Cấp\" cung cấp những kiến thức nền tảng và chuyên sâu về giải tích, đại số tuyến tính và phương trình vi phân, phù hợp với sinh viên các trường đại học, cao đẳng và những người yêu thích nghiên cứu toán học.', 18),
-(48, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735276562/book_images/hkffbk9dyrvzoe3awlyo.jpg', 'Tắt đèn', 'Ngô Tất Tố', 2, '0000-00-00', 3, 'Tiếng Việt', 278, 'Tắt đèn là một trong những tác phẩm văn học tiêu biểu nhất của nhà văn Ngô Tất Tố. Đây là một tác phẩm văn học hiện thực phê phán với nội dung nói về cuộc sống khốn khổ của tầng lớp nông dân Việt Nam đầu thế kỉ XX dưới ách đô hộ của thực dân Pháp.', 28);
+(46, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000590/book_images/bvzynwhrvbicbtnczecg.jpg', 'Toán Cao Cấp', 'Nguyễn Đình Trí', 2, '0000-00-00', 2, 'Tiếng Việt', 512, 'Cuốn sách \"Toán Cao Cấp\" cung cấp những kiến thức nền tảng và chuyên sâu về giải tích, đại số tuyến tính và phương trình vi phân, phù hợp với sinh viên các trường đại học, cao đẳng và những người yêu thích nghiên cứu toán học.', 18),
+(48, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735276562/book_images/hkffbk9dyrvzoe3awlyo.jpg', 'Tắt Đèn', 'Ngô Tất Tố', 2, '0000-00-00', 3, 'Tiếng Việt', 278, 'Tắt đèn là một trong những tác phẩm văn học tiêu biểu nhất của nhà văn Ngô Tất Tố. Đây là một tác phẩm văn học hiện thực phê phán với nội dung nói về cuộc sống khốn khổ của tầng lớp nông dân Việt Nam đầu thế kỉ XX dưới ách đô hộ của thực dân Pháp.', 28);
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,9 @@ CREATE TABLE `borrow_list` (
 --
 
 INSERT INTO `borrow_list` (`id`, `borrow_request_id`, `status_user`, `book_condition_id`, `fine_fee_id`, `return_day`) VALUES
-(32, 28, 'Đã trả sách', 4, 3, '2024-12-31');
+(32, 28, 'Đã trả sách', 4, 3, '2024-12-31'),
+(33, 29, 'Đã trả sách', 3, 3, '2025-01-07'),
+(35, 30, 'Chờ nhận sách', NULL, NULL, '2025-01-16');
 
 -- --------------------------------------------------------
 
@@ -139,7 +141,9 @@ CREATE TABLE `borrow_requests` (
 --
 
 INSERT INTO `borrow_requests` (`id`, `book_id`, `quantity`, `user_id`, `return_date`, `status`, `created_at`) VALUES
-(28, 42, 4, 5, '2024-12-31', 'Duyệt', '2024-12-29 12:25:32');
+(28, 42, 4, 5, '2024-12-31', 'Duyệt', '2024-12-29 12:25:32'),
+(29, 42, 5, 5, '2025-01-07', 'Duyệt', '2025-01-02 07:53:27'),
+(30, 42, 3, 5, '2025-01-16', 'Duyệt', '2025-01-03 17:01:38');
 
 --
 -- Triggers `borrow_requests`
@@ -155,11 +159,16 @@ $$
 DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `after_borrow_request_approved` AFTER UPDATE ON `borrow_requests` FOR EACH ROW BEGIN
-    -- Kiểm tra nếu trạng thái mới là "Duyệt" và trạng thái cũ không phải là "Duyệt"
+    -- Thêm bản ghi mới vào borrow_list nếu trạng thái là "Duyệt"
     IF NEW.status = 'Duyệt' AND OLD.status != 'Duyệt' THEN
-        -- Thêm bản ghi mới vào bảng borrow_list
         INSERT INTO borrow_list (borrow_request_id, status_user, return_day)
         VALUES (NEW.id, 'Chờ nhận sách', NEW.return_date);
+    END IF;
+
+    -- Xóa bản ghi trong borrow_list nếu trạng thái là "Chờ xử lý" hoặc "Hủy"
+    IF NEW.status IN ('Chờ xử lý', 'Hủy') THEN
+        DELETE FROM borrow_list
+        WHERE borrow_request_id = NEW.id;
     END IF;
 END
 $$
@@ -379,19 +388,19 @@ ALTER TABLE `book_condition_on_return`
 -- AUTO_INCREMENT for table `borrow_list`
 --
 ALTER TABLE `borrow_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `borrow_requests`
 --
 ALTER TABLE `borrow_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `fine_fee`
@@ -403,7 +412,7 @@ ALTER TABLE `fine_fee`
 -- AUTO_INCREMENT for table `publishers`
 --
 ALTER TABLE `publishers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `users`

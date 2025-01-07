@@ -11,8 +11,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 if (isset($data['id'], $data['status_user'], $data['book_condition_id'], $data['fine_fee_id'])) {
     $id = $data['id'];
     $status_user = $data['status_user'];
-    $book_condition_id = $data['book_condition_id'];
-    $fine_fee_id = $data['fine_fee_id'];
+    $book_condition_id = !empty($data['book_condition_id']) ? $data['book_condition_id'] : null;
+    $fine_fee_id = !empty($data['fine_fee_id']) ? $data['fine_fee_id'] : null;
 
     $stmt = $conn->prepare("
         UPDATE borrow_list 

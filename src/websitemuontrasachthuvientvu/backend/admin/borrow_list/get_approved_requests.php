@@ -16,10 +16,12 @@ try {
             book_condition_on_return.name AS book_condition_name,
             borrow_list.fine_fee_id,
             fine_fee.fee AS fine_fee_amount,
-            borrow_list.return_day
+            borrow_list.return_day,
+            borrow_requests.created_at AS approved_at -- Thời gian phê duyệt
         FROM borrow_list
         LEFT JOIN book_condition_on_return ON borrow_list.book_condition_id = book_condition_on_return.id
         LEFT JOIN fine_fee ON borrow_list.fine_fee_id = fine_fee.id
+        LEFT JOIN borrow_requests ON borrow_list.borrow_request_id = borrow_requests.id -- Liên kết với bảng borrow_requests
     ");
     $stmt->execute();
     $result = $stmt->get_result();

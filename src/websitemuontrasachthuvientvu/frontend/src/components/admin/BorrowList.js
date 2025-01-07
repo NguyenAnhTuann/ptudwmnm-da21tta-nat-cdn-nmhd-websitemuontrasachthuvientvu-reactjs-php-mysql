@@ -18,7 +18,14 @@ const BorrowList = () => {
         setNotification({ message: "", visible: false });
     };
 
-    // Fetch dữ liệu từ bảng borrow_list, book_condition_on_return, và fine_fee
+    const formatTime = (seconds) => {
+        const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+        const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+        const secs = String(seconds % 60).padStart(2, "0");
+        return `${hours}:${minutes}:${secs}`;
+    };
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,7 +53,33 @@ const BorrowList = () => {
         fetchData();
     }, []);
 
-    // Hàm xử lý cập nhật dữ liệu
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setBorrowList((prevList) =>
+                prevList.map((item) => {
+                    if (item.status_user !== "Chờ nhận sách" || !item.approved_at) {
+                        return { ...item, timeRemaining: null, isDisabled: item.status_user !== "Chờ nhận sách" };
+                    }
+
+                    const approvedTime = new Date(item.approved_at);
+                    const currentTime = new Date();
+                    const timeElapsed = Math.floor((currentTime - approvedTime) / 1000);
+                    const timeRemaining = Math.max(0, 86400 - timeElapsed);
+
+                    return {
+                        ...item,
+                        timeRemaining,
+                        isDisabled: timeRemaining === 0,
+                    };
+                })
+            );
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+
+
     const handleSave = async (id, statusUser, bookConditionId, fineFeeId) => {
         try {
             const response = await fetch(
@@ -83,7 +116,6 @@ const BorrowList = () => {
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
-                        {/* Biểu tượng */}
                         <div className="flex justify-center mt-6 mb-4">
                             <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center shadow-lg">
                                 <svg
@@ -97,13 +129,9 @@ const BorrowList = () => {
                                 </svg>
                             </div>
                         </div>
-
-                        {/* Nội dung */}
                         <div className="px-6 py-2 text-center text-gray-700 text-base font-medium">
                             {notification.message}
                         </div>
-
-                        {/* Footer */}
                         <div className="flex justify-center px-6 py-4">
                             <button
                                 onClick={closeNotification}
@@ -115,16 +143,11 @@ const BorrowList = () => {
                     </div>
                 </div>
             )}
-
             <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                {/* Tiêu đề */}
                 <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
                     Quản Lý trạng thái đơn mượn
                 </h2>
-
-                {/* Đường viền dưới tiêu đề */}
                 <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
-                {/* Nút quay lại */}
                 <div className="absolute top-4 left-4">
                     <button
                         onClick={() => navigate("/admin")}
@@ -148,21 +171,11 @@ const BorrowList = () => {
                     </button>
                 </div>
             </div>
-
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
-                    {/* Header */}
                     <thead className="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
                         <tr>
-                            {[
-                                "ID",
-                                "ID Đơn Mượn",
-                                "Trạng Thái",
-                                "Tình Trạng Sách",
-                                "Phí Phạt",
-                                "Ngày Trả",
-                                "Hành Động",
-                            ].map((header, index) => (
+                            {["ID", "ID Đơn Mượn", "Trạng Thái", "Tình Trạng Sách", "Phí Phạt", "Ngày Trả", "Hành Động"].map((header, index) => (
                                 <th
                                     key={index}
                                     className="px-6 py-3 border-r border-blue-300 text-left text-sm font-semibold uppercase"
@@ -172,8 +185,6 @@ const BorrowList = () => {
                             ))}
                         </tr>
                     </thead>
-
-                    {/* Body */}
                     <tbody>
                         {borrowList.map((item, index) => (
                             <tr
@@ -183,19 +194,34 @@ const BorrowList = () => {
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">{item.id}</td>
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">{item.borrow_request_id}</td>
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">
-                                    <select
-                                        value={item.status_user}
-                                        onChange={(e) => {
-                                            item.status_user = e.target.value;
-                                            setBorrowList([...borrowList]);
-                                        }}
-                                        className="w-full p-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-400"
-                                    >
-                                        <option value="Chờ nhận sách">Chờ nhận sách</option>
-                                        <option value="Đang mượn sách">Đang mượn sách</option>
-                                        <option value="Đã trả sách">Đã trả sách</option>
-                                    </select>
+                                    <div>
+                                        <select
+                                            value={item.status_user}
+                                            onChange={(e) => {
+                                                item.status_user = e.target.value;
+                                                setBorrowList([...borrowList]);
+                                            }}
+                                            className="w-full p-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-400"
+                                            disabled={item.isDisabled}
+                                        >
+                                            <option value="Chờ nhận sách">Chờ nhận sách</option>
+                                            <option value="Đang mượn sách">Đang mượn sách</option>
+                                            <option value="Đã trả sách">Đã trả sách</option>
+                                        </select>
+                                        <div
+                                            className={`mt-2 px-3 py-1 text-sm font-bold text-center rounded-lg ${item.timeRemaining > 0 ? "bg-red-600 text-white" : " text-black"
+                                                }`}
+                                        >
+                                            {item.timeRemaining !== null
+                                                ? item.timeRemaining > 0
+                                                    ? formatTime(item.timeRemaining)
+                                                    : "Hết thời gian"
+                                                : ""}
+                                        </div>
+                                    </div>
                                 </td>
+
+
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">
                                     <select
                                         value={item.book_condition_id || ""}
@@ -213,6 +239,7 @@ const BorrowList = () => {
                                         ))}
                                     </select>
                                 </td>
+
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">
                                     <select
                                         value={item.fine_fee_id || ""}
@@ -240,12 +267,10 @@ const BorrowList = () => {
                                             handleSave(item.id, item.status_user, item.book_condition_id, item.fine_fee_id)
                                         }
                                     >
-                                        {/* Icon lưu */}
                                         <FontAwesomeIcon icon="save" className="mr-2 text-white" />
                                         Lưu
                                     </button>
                                 </td>
-
                             </tr>
                         ))}
                     </tbody>

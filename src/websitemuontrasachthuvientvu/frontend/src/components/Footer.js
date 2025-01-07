@@ -12,7 +12,7 @@ const Footer = () => {
                             Sử dụng ứng dụng TVU Library trên di động!
                         </h4>
                         <img
-                            src="/image/logolibrarytvu.png"
+                            src="/image/logolibrarytet.png"
                             alt="TVU Logo"
                             className="w-[300px] h-auto object-contain mb-4"
                         />
@@ -65,10 +65,14 @@ const Footer = () => {
                 <div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800 leading-relaxed">
                         SẢN PHẨM DEMO PHỤC VỤ ĐỒ ÁN KẾT THÚC MÔN{" "}
-                        <br />
+                        {/* <br />
                         <span className="text-gray-600">
                             PHÁT TRIỂN ỨNG DỤNG WEB MÃ NGUỒN MỞ
                         </span>
+                        <br/>
+                        <span className="text-gray-600">
+                            XÂY DỰNG PHẦN MỀM HƯỚNG ĐỐI TƯỢNG
+                        </span> */}
                     </h3>
 
                     <p className="text-sm mb-4">
@@ -77,12 +81,12 @@ const Footer = () => {
                         </span>{" "}
                         Xây dựng Hệ thống quản lí mượn trả sách thư viện TVU
                     </p>
-                    <p className="text-sm mb-4">
+                    {/* <p className="text-sm mb-4">
                         <span className="font-semibold text-gray-800">
                             Giáo viên hướng dẫn:
                         </span>{" "}
                         Phạm Thị Trúc Mai
-                    </p>
+                    </p> */}
                     <h4 className="text-lg font-semibold mb-2">Thành viên thực hiện:</h4>
                     <ul className="space-y-3 text-sm leading-6">
                         <li className="flex items-center gap-3">
@@ -109,7 +113,7 @@ const Footer = () => {
                 {/* Logo thư viện */}
                 <div className="flex justify-end">
                     <img
-                        src="/image/logolibrarytvu.png"
+                        src="/image/logolibrarytet.png"
                         alt="Logo Thư Viện"
                         className="w-[600px] h-auto object-contain"
                     />
