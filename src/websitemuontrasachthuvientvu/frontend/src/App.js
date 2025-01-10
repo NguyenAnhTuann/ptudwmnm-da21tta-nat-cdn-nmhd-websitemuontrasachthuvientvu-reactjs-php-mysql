@@ -20,6 +20,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import BorrowList from "./components/admin/BorrowList";
 import Dashboard from "./components/Dashboard";
 import FallingFlowers from "./components/FallingFlowers";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +40,7 @@ function App() {
   return (
     <BorrowProvider>
       <Router>
+      <BackgroundMusic />
         <div id="falling-flowers" className="fixed top-0 left-0 w-full h-full pointer-events-none z-50">
           <FallingFlowersWrapper />
         </div>

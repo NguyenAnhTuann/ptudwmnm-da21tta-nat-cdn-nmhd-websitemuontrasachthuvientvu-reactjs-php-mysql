@@ -10,6 +10,11 @@ const BookDetail = () => {
     const { addToBorrowList } = useContext(BorrowContext);
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
         const fetchBookDetail = async () => {
             try {
                 const response = await fetch(
@@ -31,6 +36,13 @@ const BookDetail = () => {
             setIsModalOpen(true); // Mở modal thông báo
         }
     };
+
+    const formatDateToDDMMYYYY = (date) => {
+        if (!date) return "Không xác định";
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
+    };
+
 
     return (
         <div
@@ -84,9 +96,10 @@ const BookDetail = () => {
                                     <span className="text-xl text-yellow-500">📅</span>
                                     <span>
                                         <strong className="font-semibold">Ngày xuất bản:</strong>{" "}
-                                        {book.publication_date}
+                                        {formatDateToDDMMYYYY(book.publication_date)}
                                     </span>
                                 </p>
+
                                 <p className="flex items-center gap-2">
                                     <span className="text-xl text-red-500">📄</span>
                                     <span>

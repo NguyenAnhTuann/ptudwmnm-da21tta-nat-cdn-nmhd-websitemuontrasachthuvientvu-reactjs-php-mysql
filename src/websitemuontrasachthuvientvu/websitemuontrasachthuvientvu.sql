@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2025 at 11:06 AM
+-- Generation Time: Jan 09, 2025 at 09:35 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -69,10 +69,11 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id`, `image`, `title`, `author`, `publisher_id`, `publication_date`, `category_id`, `language`, `pages`, `description`, `available_quantity`) VALUES
 (42, 'https://res.cloudinary.com/duk8odqun/image/upload/v1734999574/book_images/pwfsvk5efttsftcrfgzz.png', 'Lập Trình C++', 'Bjarne Stroustrup', 17, '1993-03-12', 1, 'Tiếng Việt', 287, 'Cuốn sách này cung cấp kiến thức cơ bản và nâng cao về C++, bao gồm các tính năng hiện đại như C++11, C++14, C++17, hướng dẫn thực hành và kỹ thuật tối ưu hóa mã.', 29),
-(44, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000254/book_images/d7xpshjysgizu6cf24vi.jpg', 'Truyện Kiều', 'Nguyễn Du', 4, '0000-00-00', 17, 'Tiếng Việt', 325, 'Tác phẩm kinh điển của nền văn học Việt Nam, kể về số phận bi thương của nàng Kiều qua 15 năm lưu lạc.', 25),
-(45, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000430/book_images/ncze7hk0pvwpnyr8flch.jpg', 'Dune', 'Frank Herbert', 19, '0000-00-00', 4, 'Tiếng Anh', 412, 'Dune là tiểu thuyết khoa học viễn tưởng kinh điển, kể về câu chuyện chính trị, tôn giáo, và sinh tồn trên hành tinh sa mạc Arrakis, nơi có nguồn tài nguyên quý giá nhất vũ trụ - \"spice\".', 5),
-(46, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000590/book_images/bvzynwhrvbicbtnczecg.jpg', 'Toán Cao Cấp', 'Nguyễn Đình Trí', 2, '0000-00-00', 2, 'Tiếng Việt', 512, 'Cuốn sách \"Toán Cao Cấp\" cung cấp những kiến thức nền tảng và chuyên sâu về giải tích, đại số tuyến tính và phương trình vi phân, phù hợp với sinh viên các trường đại học, cao đẳng và những người yêu thích nghiên cứu toán học.', 18),
-(48, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735276562/book_images/hkffbk9dyrvzoe3awlyo.jpg', 'Tắt Đèn', 'Ngô Tất Tố', 2, '0000-00-00', 3, 'Tiếng Việt', 278, 'Tắt đèn là một trong những tác phẩm văn học tiêu biểu nhất của nhà văn Ngô Tất Tố. Đây là một tác phẩm văn học hiện thực phê phán với nội dung nói về cuộc sống khốn khổ của tầng lớp nông dân Việt Nam đầu thế kỉ XX dưới ách đô hộ của thực dân Pháp.', 28);
+(44, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000254/book_images/d7xpshjysgizu6cf24vi.jpg', 'Truyện Kiều', 'Nguyễn Du', 4, '2005-09-05', 17, 'Tiếng Việt', 325, 'Tác phẩm kinh điển của nền văn học Việt Nam, kể về số phận bi thương của nàng Kiều qua 15 năm lưu lạc.', 25),
+(45, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000430/book_images/ncze7hk0pvwpnyr8flch.jpg', 'Dune', 'Frank Herbert', 19, '2011-03-15', 4, 'Tiếng Anh', 412, 'Dune là tiểu thuyết khoa học viễn tưởng kinh điển, kể về câu chuyện chính trị, tôn giáo, và sinh tồn trên hành tinh sa mạc Arrakis, nơi có nguồn tài nguyên quý giá nhất vũ trụ - \"spice\".', 5),
+(46, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735000590/book_images/bvzynwhrvbicbtnczecg.jpg', 'Toán Cao Cấp', 'Nguyễn Đình Trí', 2, '2007-06-28', 2, 'Tiếng Việt', 512, 'Cuốn sách \"Toán Cao Cấp\" cung cấp những kiến thức nền tảng và chuyên sâu về giải tích, đại số tuyến tính và phương trình vi phân, phù hợp với sinh viên các trường đại học, cao đẳng và những người yêu thích nghiên cứu toán học.', 18),
+(48, 'https://res.cloudinary.com/duk8odqun/image/upload/v1735276562/book_images/hkffbk9dyrvzoe3awlyo.jpg', 'Tắt Đèn', 'Ngô Tất Tố', 2, '1995-09-05', 3, 'Tiếng Việt', 278, 'Tắt đèn là một trong những tác phẩm văn học tiêu biểu nhất của nhà văn Ngô Tất Tố. Đây là một tác phẩm văn học hiện thực phê phán với nội dung nói về cuộc sống khốn khổ của tầng lớp nông dân Việt Nam đầu thế kỉ XX dưới ách đô hộ của thực dân Pháp.', 28),
+(49, 'https://res.cloudinary.com/duk8odqun/image/upload/v1736411467/book_images/cx4qvpq1t1gj10evpt1t.jpg', 'Đắc Nhân Tâm', 'Dale Carnegie', 21, '2021-06-15', 9, 'Tiếng Việt', 320, 'Một trong những cuốn sách kinh điển về nghệ thuật giao tiếp và phát triển bản thân, giúp bạn xây dựng mối quan hệ tốt đẹp trong công việc và cuộc sống.', 50);
 
 -- --------------------------------------------------------
 
@@ -105,20 +106,22 @@ INSERT INTO `book_condition_on_return` (`id`, `name`) VALUES
 CREATE TABLE `borrow_list` (
   `id` int(11) NOT NULL,
   `borrow_request_id` int(11) NOT NULL,
-  `status_user` enum('Chờ nhận sách','Đang mượn sách','Đã trả sách') COLLATE utf8mb4_unicode_ci DEFAULT 'Chờ nhận sách',
+  `status_user` enum('Chờ nhận sách','Đang mượn sách','Đã trả sách','Quá hạn trả sách') COLLATE utf8mb4_unicode_ci DEFAULT 'Chờ nhận sách',
   `book_condition_id` int(11) DEFAULT NULL,
   `fine_fee_id` int(11) DEFAULT NULL,
-  `return_day` date DEFAULT NULL
+  `return_day` date DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `borrow_list`
 --
 
-INSERT INTO `borrow_list` (`id`, `borrow_request_id`, `status_user`, `book_condition_id`, `fine_fee_id`, `return_day`) VALUES
-(32, 28, 'Đã trả sách', 4, 3, '2024-12-31'),
-(33, 29, 'Đã trả sách', 3, 3, '2025-01-07'),
-(35, 30, 'Chờ nhận sách', NULL, NULL, '2025-01-16');
+INSERT INTO `borrow_list` (`id`, `borrow_request_id`, `status_user`, `book_condition_id`, `fine_fee_id`, `return_day`, `created_at`) VALUES
+(32, 28, 'Đã trả sách', 4, 3, '2024-12-31', '2025-01-03 17:13:06'),
+(33, 29, 'Đã trả sách', 3, 3, '2025-01-07', '2025-01-03 17:13:06'),
+(36, 30, 'Đã trả sách', 1, 1, '2025-01-16', '2025-01-03 17:27:02'),
+(37, 31, 'Chờ nhận sách', 3, 2, '2025-01-04', '2025-01-03 17:52:37');
 
 -- --------------------------------------------------------
 
@@ -143,7 +146,8 @@ CREATE TABLE `borrow_requests` (
 INSERT INTO `borrow_requests` (`id`, `book_id`, `quantity`, `user_id`, `return_date`, `status`, `created_at`) VALUES
 (28, 42, 4, 5, '2024-12-31', 'Duyệt', '2024-12-29 12:25:32'),
 (29, 42, 5, 5, '2025-01-07', 'Duyệt', '2025-01-02 07:53:27'),
-(30, 42, 3, 5, '2025-01-16', 'Duyệt', '2025-01-03 17:01:38');
+(30, 42, 3, 5, '2025-01-16', 'Duyệt', '2025-01-03 17:01:38'),
+(31, 45, 3, 5, '2025-01-04', 'Duyệt', '2025-01-03 17:52:18');
 
 --
 -- Triggers `borrow_requests`
@@ -262,7 +266,8 @@ INSERT INTO `publishers` (`id`, `name`) VALUES
 (15, 'NXB Khoa Học Tự Nhiên'),
 (17, 'NXB Khoa Học & Kỹ Thuật'),
 (19, 'NXB Chilton Books'),
-(20, 'NXB Houghton Mifflin');
+(20, 'NXB Houghton Mifflin'),
+(21, 'NXB Tổng Hợp TP.HCM');
 
 -- --------------------------------------------------------
 
@@ -376,7 +381,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `book_condition_on_return`
@@ -388,13 +393,13 @@ ALTER TABLE `book_condition_on_return`
 -- AUTO_INCREMENT for table `borrow_list`
 --
 ALTER TABLE `borrow_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `borrow_requests`
 --
 ALTER TABLE `borrow_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -412,7 +417,7 @@ ALTER TABLE `fine_fee`
 -- AUTO_INCREMENT for table `publishers`
 --
 ALTER TABLE `publishers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`

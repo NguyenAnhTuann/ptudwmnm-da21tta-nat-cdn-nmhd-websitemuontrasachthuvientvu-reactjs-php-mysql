@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
+    
 
     return (
         <div className="bg-gradient-to-r from-blue-50 to-white min-h-screen p-8">

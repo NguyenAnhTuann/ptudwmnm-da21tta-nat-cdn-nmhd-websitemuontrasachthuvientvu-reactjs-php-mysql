@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LuSaveAll } from "react-icons/lu";
+
 
 const BorrowList = () => {
     const [borrowList, setBorrowList] = useState([]);
@@ -112,7 +113,7 @@ const BorrowList = () => {
     }
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -143,12 +144,9 @@ const BorrowList = () => {
                     </div>
                 </div>
             )}
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý trạng thái đơn mượn
-                </h2>
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
-                <div className="absolute top-4 left-4">
+                        <div className="mt-4">
+                {/* Nút quay lại */}
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -170,6 +168,11 @@ const BorrowList = () => {
                         Trở về Trang Quản Trị
                     </button>
                 </div>
+            </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
+                    Quản Lý trạng thái đơn mượn
+                </h2>
             </div>
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
@@ -262,12 +265,12 @@ const BorrowList = () => {
                                 </td>
                                 <td className="px-6 py-3 border-r border-gray-200 flex justify-center items-center space-x-2">
                                     <button
-                                        className="flex items-center px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                                        className="flex items-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-200 py-2 px-4 rounded-3xl shadow-sm"
                                         onClick={() =>
                                             handleSave(item.id, item.status_user, item.book_condition_id, item.fine_fee_id)
                                         }
                                     >
-                                        <FontAwesomeIcon icon="save" className="mr-2 text-white" />
+                                        <LuSaveAll icon="save" className="text-black" />
                                         Lưu
                                     </button>
                                 </td>

@@ -1,7 +1,7 @@
+import { faEdit, faPlus, faSync } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faSync, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -12,6 +12,12 @@ const Books = () => {
     const [publishers, setPublishers] = useState([]);
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: "", visible: false, type: "" });
+    const booksPerPage = 10;
+    const [searchTitle, setSearchTitle] = useState(""); // State để lưu tiêu đề tìm kiếm
+    const [searchAuthor, setSearchAuthor] = useState(""); // State để lưu tác giả tìm kiếm
+    const [searchPublisher, setSearchPublisher] = useState(""); // State để lưu nhà xuất bản tìm kiếm
+    const [currentPage, setCurrentPage] = useState(1); // State để lưu số trang hiện tại
+
 
     const showNotification = (message, type) => {
         setNotification({ message, visible: true, type });
@@ -20,6 +26,26 @@ const Books = () => {
     const closeNotification = () => {
         setNotification({ message: "", visible: false, type: "" });
     };
+
+    const filteredBooks = books.filter((book) => {
+        const titleMatch = book.title.toLowerCase().includes(searchTitle.toLowerCase());
+        const authorMatch = book.author.toLowerCase().includes(searchAuthor.toLowerCase());
+        const publisherMatch = publishers.find((p) => p.id === book.publisher_id)?.name
+            ?.toLowerCase()
+            .includes(searchPublisher.toLowerCase());
+
+        return titleMatch && authorMatch && publisherMatch;
+    });
+
+    const indexOfLastBook = currentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
+    const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const [newBook, setNewBook] = useState({
         id: null,
@@ -105,9 +131,14 @@ const Books = () => {
 
         // Chuyển đổi ngày từ dd/mm/yyyy sang yyyy-mm-dd
         const convertDateToYYYYMMDD = (date) => {
+            if (!date.includes("/")) return date; // Định dạng đã đúng
             const [day, month, year] = date.split("/");
             return `${year}-${month}-${day}`;
         };
+
+        // Trước khi gửi dữ liệu
+        newBook.publication_date = convertDateToYYYYMMDD(newBook.publication_date);
+
 
         const bookData = { ...newBook };
         if (bookData.publication_date) {
@@ -274,7 +305,7 @@ const Books = () => {
     if (loading) return <p>Loading books...</p>;
 
     return (
-        <div className="p-4 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -310,17 +341,9 @@ const Books = () => {
                     </div>
                 </div>
             )}
-
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                {/* Tiêu đề */}
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý Thông Tin Sách
-                </h2>
-
-                {/* Đường viền dưới tiêu đề */}
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
+            <div className="mt-4">
                 {/* Nút quay lại */}
-                <div className="absolute top-4 left-4">
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -342,6 +365,12 @@ const Books = () => {
                         Trở về Trang Quản Trị
                     </button>
                 </div>
+            </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                {/* Tiêu đề */}
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
+                    Quản Lý Thông Tin Sách
+                </h2>
             </div>
 
             <div className="mb-8 p-8 bg-white shadow-2xl rounded-xl border border-gray-200">
@@ -551,6 +580,40 @@ const Books = () => {
                 </div>
             </div>
 
+            <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
+                <input
+                    type="text"
+                    value={searchTitle}
+                    onChange={(e) => setSearchTitle(e.target.value)}
+                    placeholder="🔍 Tìm kiếm tên sách..."
+                    className="w-full px-6 py-3 border rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <input
+                    type="text"
+                    value={searchAuthor}
+                    onChange={(e) => setSearchAuthor(e.target.value)}
+                    placeholder="✍️ Tìm kiếm tác giả..."
+                    className="w-full px-6 py-3 border rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <input
+                    type="text"
+                    value={searchPublisher}
+                    onChange={(e) => setSearchPublisher(e.target.value)}
+                    placeholder="🏢 Tìm kiếm nhà xuất bản..."
+                    className="w-full px-6 py-3 border rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <button
+                    onClick={() => {
+                        setSearchTitle("");
+                        setSearchAuthor("");
+                        setSearchPublisher("");
+                    }}
+                    className="w-full bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
+            </div>
+
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
                     {/* Header */}
@@ -582,72 +645,53 @@ const Books = () => {
 
                     {/* Body */}
                     <tbody>
-                        {books.map((book, index) => (
-                            <tr
-                                key={book.id}
-                                className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                                    } hover:bg-blue-50`}
-                            >
+                        {currentBooks.map((book, index) => (
+                            <tr key={book.id} className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-blue-50`}>
                                 <td className="px-6 py-3 border-r border-gray-200">{book.id}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">
                                     <div className="w-20 h-28 overflow-hidden flex items-center justify-center bg-gray-100 rounded-lg">
-                                        <img
-                                            src={book.image}
-                                            alt="Book"
-                                            className="w-full h-full object-contain"
-                                            style={{ maxWidth: "100%", maxHeight: "100%" }}
-                                        />
+                                        <img src={book.image} alt="Book" className="w-full h-full object-contain" />
                                     </div>
                                 </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{book.title}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{book.author}</td>
                                 <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {book.title}
+                                    {publishers.find((publisher) => publisher.id === book.publisher_id)?.name || "Không xác định"}
                                 </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{book.publication_date}</td>
                                 <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {book.author}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {publishers.find((publisher) => publisher.id === book.publisher_id)
-                                        ?.name || "Không xác định"}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {book.publication_date}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {categories.find((category) => category.id === book.category_id)
-                                        ?.name || "Không xác định"}
+                                    {categories.find((category) => category.id === book.category_id)?.name || "Không xác định"}
                                 </td>
                                 <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
                                     {book.language}
                                 </td>
                                 <td className="px-6 py-3 border-r border-gray-200">{book.pages}</td>
-                                <td className="px-6 py-3 border-r border-gray-200">
-                                    {book.available_quantity}
-                                </td>
-                                <td className="px-6 py-3 border-r border-gray-200 break-words max-w-lg">
-                                    {book.description}
-                                </td>
+                                <td className="px-6 py-3 border-r border-gray-200">{book.available_quantity}</td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words max-w-lg">{book.description}</td>
                                 <td className="px-6 py-3 border-gray-200 flex space-x-2">
-                                    {/* Nút Sửa */}
-                                    <button
-                                        onClick={() => handleEditBook(book)}
-                                        className="flex items-center justify-center px-4 py-2 shadow border border-gray-300 rounded-full text-black hover:bg-gray-300 transition"
-                                    >
-                                        <FontAwesomeIcon icon={faEdit} className="mr-2" />
+                                    <button onClick={() => handleEditBook(book)} className="flex items-center px-4 py-2 shadow border rounded-full text-black hover:bg-gray-300">
                                         Sửa
                                     </button>
-                                    {/* Nút Xóa */}
-                                    <button
-                                        onClick={() => handleDeleteBook(book.id)}
-                                        className="flex items-center justify-center px-4 py-2 shadow border border-gray-300 rounded-full text-white bg-red-600 hover:bg-red-700 transition"
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                                    <button onClick={() => handleDeleteBook(book.id)} className="flex items-center px-4 py-2 shadow border rounded-full text-white bg-red-600 hover:bg-red-700">
                                         Xóa
                                     </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
+            </div>
+            <div className="mt-8 flex justify-center items-center space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-4 py-2 rounded ${page === currentPage ? "bg-blue-500 text-white" : "bg-gray-300 hover:bg-gray-400"}`}
+                    >
+                        {page}
+                    </button>
+                ))}
             </div>
 
         </div>

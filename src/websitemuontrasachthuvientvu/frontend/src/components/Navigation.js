@@ -11,29 +11,28 @@ const Navigation = () => {
         {/* Nút Home */}
         <Link
           to="/"
-          className={`flex items-center px-6 py-4 text-lg font-semibold rounded-2xl ${
-            location.pathname === "/"
-              ? "bg-blue-500 text-white shadow-md"
-              : "bg-white text-blue-500 border border-blue-500"
-          } hover:bg-blue-600 hover:text-white transition duration-300`}
+          className={`flex items-center px-8 py-4 text-lg font-semibold border-2 rounded-full shadow-lg transition duration-300 ${location.pathname === "/"
+              ? "bg-gray-400 text-black"
+              : " text-black"
+            } text-black hover:scale-105`}
         >
-          <AiFillHome className="mr-2 text-2xl" /> {/* Icon Home */}
+          <AiFillHome className="mr-3 text-2xl" /> {/* Icon Home */}
           Home
         </Link>
 
         {/* Nút Dashboard */}
         <Link
           to="/dashboard"
-          className={`flex items-center px-6 py-4 text-lg font-semibold rounded-2xl ${
-            location.pathname === "/dashboard"
-              ? "bg-blue-500 text-white shadow-md"
-              : "bg-white text-blue-500 border border-blue-500"
-          } hover:bg-blue-600 hover:text-white transition duration-300`}
+          className={`flex items-center px-8 py-4 text-lg font-semibold rounded-full border-2 shadow-lg transition duration-300 ${location.pathname === "/dashboard"
+              ? "bg-gray-400 text-black"
+              : "text-black"
+            } text-black hover:scale-105`}
         >
-          <AiOutlineBarChart className="mr-2 text-2xl" /> {/* Icon Dashboard */}
+          <AiOutlineBarChart className="mr-3 text-2xl" /> {/* Icon Dashboard */}
           Thống kê
         </Link>
       </div>
+      
     </nav>
   );
 };

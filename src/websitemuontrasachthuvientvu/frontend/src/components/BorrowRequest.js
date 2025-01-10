@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { BorrowContext } from "./BorrowContext";
 import { useNavigate } from "react-router-dom";
+import { FiTrash2 } from "react-icons/fi";
 
 const BorrowRequest = () => {
     const { borrowList, clearBorrowList, setBorrowList } = useContext(BorrowContext);
@@ -75,6 +76,11 @@ const BorrowRequest = () => {
         }
     };
 
+    const handleRemoveBook = (bookId) => {
+        setBorrowList((prevList) => prevList.filter((book) => book.id !== bookId));
+        showToast("Sách đã được xóa khỏi đơn yêu cầu mượn.", "success");
+    };
+
 
     return (
         <div className="p-10 bg-gray-50 min-h-screen">
@@ -116,6 +122,7 @@ const BorrowRequest = () => {
                                 <th className="px-6 py-4 text-left">Số Trang</th>
                                 <th className="px-6 py-4 text-left">Ngôn Ngữ</th>
                                 <th className="px-6 py-4 text-center">Số Lượng</th>
+                                <th className="px-6 py-4 text-center">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
@@ -134,18 +141,48 @@ const BorrowRequest = () => {
                                     <td className="px-6 py-4">{book.publication_date}</td>
                                     <td className="px-6 py-4">{book.pages}</td>
                                     <td className="px-6 py-4">{book.language}</td>
-                                    <td className="px-6 py-4 text-center">
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value={book.quantity || 1}
-                                            onChange={(e) => handleQuantityChange(book.id, e.target.value)}
-                                            className="w-16 border border-gray-300 rounded-md text-center shadow-sm focus:ring focus:ring-blue-500"
-                                        />
+                                    <td className="text-center align-middle">
+                                        <div className="inline-flex items-center justify-center space-x-1 bg-gray-100 p-2 rounded-lg shadow-md">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleQuantityChange(book.id, Math.max(1, (book.quantity || 1) - 1))}
+                                                className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300"
+                                            >
+                                                -
+                                            </button>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                value={book.quantity || 1}
+                                                onChange={(e) => handleQuantityChange(book.id, e.target.value)}
+                                                className="w-16 h-8 text-center border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => handleQuantityChange(book.id, (book.quantity || 1) + 1)}
+                                                className="w-8 h-8 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
                                     </td>
+
+                                    <td className="px-6 py-4 text-center align-middle">
+                                        <div className="flex items-center justify-center">
+                                            <button
+                                                onClick={() => handleRemoveBook(book.id)}
+                                                className="w-auto h-10 flex items-center justify-center px-4 border border-gray-400 hover:bg-gray-200 hover:scale-110 rounded-2xl hover:border-gray-400 text-black hover:text-black focus:outline-none focus:ring focus:ring-red-300"
+                                            >
+                                                <FiTrash2 className="w-5 h-5 mr-2" />
+                                                Xóa
+                                            </button>
+                                        </div>
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>
+
                     </table>
 
                     {/* Ngày trả sách */}
@@ -161,7 +198,7 @@ const BorrowRequest = () => {
                             id="returnDate"
                             value={returnDate}
                             onChange={(e) => setReturnDate(e.target.value)}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="w-40 items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                             required
                         />
                     </div>
@@ -169,7 +206,7 @@ const BorrowRequest = () => {
                     {/* Nút gửi yêu cầu */}
                     <button
                         onClick={handleSendRequest}
-                        className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105"
+                        className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 px-4 rounded-lg shadow-lg"
                     >
                         🚀 Gửi Yêu Cầu Mượn
                     </button>
