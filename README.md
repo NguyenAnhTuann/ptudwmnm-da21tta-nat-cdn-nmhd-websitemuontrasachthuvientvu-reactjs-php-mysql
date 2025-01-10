@@ -1,15 +1,20 @@
-# XÂY DỰNG WEBSITE MƯỢN - TRẢ SÁCH THƯ VIỆN TVU
+# MÃ ĐỀ TÀI: 07
+# XÂY DỰNG WEBSITE MƯỢN - TRẢ SÁCH THƯ VIỆN TẠI TRUNG TÂM HỌC LIỆU - PHÁT TRIỂN DẠY VÀ HỌC
 # Nguyễn Anh Tuấn - 110121123 - DA21TTA
+# Cao Duy Nhân - 110121070 - DA21TTA
+# Nguyễn Minh Hải Đăng - 110121181 - DA21TTA
 # --------------------------------------------------------------
 # Mô tả đồ án
- ```bash- Tên đề tài: Xây dựng Website mượn - trả sách thư viện TVU
+ ```bash- Tên đề tài: Xây dựng Website mượn - trả sách tại Trung tâm học liệu - Phát triển dạy và học
 - Giáo viên hướng dẫn: Phạm Thị Trúc Mai
 - Sinh viên thực hiện: Nguyễn Anh Tuấn - 110121123 - DA21TTA
 - Thời gian thực hiện: Từ ngày 01/12/2024 đến 11/01/2025
  ```
 - Nội dung đề tài:
 ```bash
-- Cung cấp nền tảng hiển thị các sách có trong thư viện và độc giả có thể gửi yêu cầu mượn sách và chờ đến khi admin của thư viện duyệt đơn mượn thì độc giả có thể đến thư viện nhận sách.
+- Cung cấp nền tảng hiển thị tất cả sách có trong thư viện cho phép người dùng đăng nhập vào hệ thống xem và gửi yêu cầu mượn sách.
+- Phần quản lý dành cho admin: quản lý thông tin sách, nhà xuất bản, thể loại sách.
+- Phần quản lý yêu cầu đơn mượn, quản trị viên xử lý các trạng thái của các yêu cầu đơn mượn.
 
 ```
 - Yêu Cầu:
@@ -23,11 +28,10 @@
 -	Phương pháp thực hiện:
 ```bash
 1. Front-end: Sử dụng ReactJS để xây dựng giao diện người dùng và người quản trị, hiển thị thông tin rõ ràng, dễ dàng sử dụng.
-2. Back-end: Sử dụng NodeJS (framework ExpressJS) để xử lý logic nghiệp vụ, tương tác với cơ sở dữ liệu MySQL. Triển khai các chức năng chính: đăng nhập, đăng ký, đăng tin tìm đồ thất lạc hoặc đồ nhặt được (kèm theo vị trí sử dụng Api Google Maps), tìm kiếm, gửi thông báo qua email, quản lý thông tin người dùng, thông tin bài đăng.
-3. Cơ sở dữ liệu: Thiết kế cơ sở dữ liệu MySQL, các bảng dữ liệu: người dùng, bài đăng, loại đồ vật, vị trí, mối quan hệ giữa các bảng để đảm báo tính toàn viện dữ liệu, các chức năng chính trong cơ sở dữ liệu: thêm, sửa, xóa, tìm kiếm.
+2. Back-end: Sử dụng PHP thuần để xử lý logic nghiệp vụ, tương tác với cơ sở dữ liệu MySQL. Triển khai các chức năng chính: đăng nhập, đăng ký, gửi yêu cầu mượn, chỉnh sửa thông tin độc giả, thêm sửa xóa sách, nhà xuất bản, thể loại sách,... xử lý yêu cầu đơn mượn và trả sách.
+3. Cơ sở dữ liệu: Thiết kế cơ sở dữ liệu MySQL, các bảng dữ liệu: người dùng, admin, sách, thể loại sách, nhà xuất bản, đơn yêu cầu mượn sách, tình trạng sách khi trả, phí phạt.
 4. Kết nối Front-end và Back-end.
-5. Tích hợp bản đồ (API Google Maps).
-6. Chức năng gửi thông báo qua email khi có tin tức mới về đồ nhặt được hoặc đồ bị thất lạc.
+5. Chức năng gửi thông báo qua email khi đơn yêu cầu mượn của độc giả được quản trị viên thư viện duyệt.
 ```
 - Kết quả đạt được:
 ```bash
@@ -35,8 +39,8 @@
 2. Giao diện người dùng và người quản trị hiển thị thông tin rõ ràng, dễ dàng sử dụng.
 3. Bảo mật và hiệu quả.
 4. Đảm bảo tính toàn vẹn dữ liệu trong cơ sở dữ liệu.
-5. Website có tích hợp bản đồ, gửi thông báo qua email.
-6. Kiểm thử Website trước khi nộp đồ án.
+5. Website có tích gửi thông báo qua email.
+6. Kiểm thử Website trước khi nộp đồ án kết thúc.
 
 ```
 ## Mục lục
@@ -45,19 +49,9 @@
 - [Sử Dụng](#sử-dụng)
 - [Liên Hệ](#liên-hệ)
 
-## Lịch Trình Thực Hiện
-- Từ ngày 11/11/2024 đến 17/11/2024: Tìm hiểu về ReactJS, NodeJS, MySQL, Google maps API, gửi thông báo qua mail, thiết kế các giao diện cơ bản như đăng nhập, đăng ký, đăng bài viết mới.
-- Từ ngày 25/11/2024 đến 01/12/2024: Bắt đầu tạo các bảng bao gồm các thuộc tính trong CSDL, Xây dựng các chức năng đăng nhập, đăng ký, đăng bài viết mới kết hợp kiểm thử CSDL.
-- Từ ngày 09/12/2024 đến 15/12/2024:
-  + Tiến hành thiết kế các phần giao diện còn lại như hiển thị bài đăng, phần tìm kiếm, thông tin liên lạc, khu vực quản lý người dùng, bài đăng, vị trí.
-  + Xây dựng các chức năng còn lại như tìm kiếm đồ thất lạc theo các tiêu chí như ngày mất, địa điểm, loại đồ vật, quản lý tài khoản người dùng (đăng nhập, đăng ký, chỉnh sửa thông tin), quản lý bài đăng (thông tin, địa điểm, số điện thoại người đăng bài viết).
-  + Hệ thống thông báo qua mail khi có thông tin mới liên quan đến đồ thất lạc hoặc đồ nhặt được.
-- Từ ngày 23/12/2024 đến 29/12/2024: Triển khai Website lên host, nền tảng aws, docker,…
-- Từ ngày 30/12/2024 đến 05/01/2025: Kiểm thử toàn bộ dự án, hoàn thành Website, quyển báo cáo, slide thuyết trình, commit lên GitHub(commit mỗi tuần như tiến trình).
-
 1. Cài đặt yêu cầu:
     ```bash
-    - Cài đặt NodeJS
+    - Cài đặt PHP thuần
     ```
    ```bash
    - Cài đặt ReactJS
@@ -70,7 +64,7 @@
 Sử dụng các ngôn ngữ:
 
 ```bash
-- ReactJS
+- PHP thuần
 ```
 ```bash
 - NodeJS
