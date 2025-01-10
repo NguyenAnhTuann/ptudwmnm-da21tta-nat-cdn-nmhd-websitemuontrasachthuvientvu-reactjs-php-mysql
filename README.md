@@ -7,7 +7,7 @@
 # Mô tả đồ án
  ```bash- Tên đề tài: Xây dựng Website mượn - trả sách tại Trung tâm học liệu - Phát triển dạy và học
 - Giáo viên hướng dẫn: Phạm Thị Trúc Mai
-- Sinh viên thực hiện: Nguyễn Anh Tuấn - 110121123 - DA21TTA
+- Sinh viên thực hiện: Nguyễn Anh Tuấn - Cao Duy Nhân - Nguyễn Minh Hải Đăng
 - Thời gian thực hiện: Từ ngày 01/12/2024 đến 11/01/2025
  ```
 - Nội dung đề tài:
