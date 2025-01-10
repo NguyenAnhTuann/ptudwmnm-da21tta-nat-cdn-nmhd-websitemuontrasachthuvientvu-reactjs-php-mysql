@@ -13,10 +13,13 @@ const Books = () => {
     const [categories, setCategories] = useState([]);
     const [notification, setNotification] = useState({ message: "", visible: false, type: "" });
     const booksPerPage = 10;
-    const [searchTitle, setSearchTitle] = useState(""); // State để lưu tiêu đề tìm kiếm
-    const [searchAuthor, setSearchAuthor] = useState(""); // State để lưu tác giả tìm kiếm
-    const [searchPublisher, setSearchPublisher] = useState(""); // State để lưu nhà xuất bản tìm kiếm
-    const [currentPage, setCurrentPage] = useState(1); // State để lưu số trang hiện tại
+    const [searchTitle, setSearchTitle] = useState("");
+    const [searchAuthor, setSearchAuthor] = useState("");
+    const [searchPublisher, setSearchPublisher] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalBooks, setTotalBooks] = useState(0);
+    const [categoryCount, setCategoryCount] = useState({});
+
 
 
     const showNotification = (message, type) => {
@@ -166,6 +169,20 @@ const Books = () => {
         }
     };
 
+    const pagination = () => {
+        const pages = [];
+        const startPage = Math.max(1, currentPage - 1);
+        const endPage = Math.min(totalPages, currentPage + 1);
+
+        if (currentPage > 1) pages.push("prev");
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+        if (currentPage < totalPages) pages.push("next");
+
+        return pages;
+    };
+
     const handleUpdateBook = async () => {
         // Kiểm tra các trường bắt buộc
         if (
@@ -251,6 +268,15 @@ const Books = () => {
             // Kiểm tra nếu dữ liệu trả về là mảng, nếu không thì gán mảng rỗng
             if (Array.isArray(data)) {
                 setBooks(data);
+                setTotalBooks(data.length); // Đếm tổng số sách
+
+                // Tính số lượng sách theo thể loại
+                const categoryCountObj = data.reduce((acc, book) => {
+                    const category = book.category_id;
+                    acc[category] = acc[category] ? acc[category] + 1 : 1;
+                    return acc;
+                }, {});
+                setCategoryCount(categoryCountObj);
             } else {
                 console.error("API trả về không phải là mảng:", data);
                 setBooks([]); // Gán mảng rỗng nếu dữ liệu không hợp lệ
@@ -262,6 +288,7 @@ const Books = () => {
             setLoading(false);
         }
     };
+
 
 
     useEffect(() => {
@@ -614,6 +641,43 @@ const Books = () => {
                 </button>
             </div>
 
+            <div className="mb-8 p-8 bg-white shadow-2xl rounded-xl border border-gray-200">
+                <div className="flex justify-between items-center">
+                    <div className="text-lg font-bold text-gray-800">
+                        <span>Tổng số sách: {totalBooks}</span>
+                    </div>
+
+                    {/* Button để hiển thị bảng */}
+                    <div className="relative group">
+                        <button className="px-6 py-2 bg-blue-500 text-white rounded-xl shadow-lg hover:bg-blue-600">
+                            Tổng số sách của từng thể loại
+                        </button>
+
+                        {/* Bảng hiển thị tổng số sách theo thể loại */}
+                        <div className="absolute left-0 mt-2 w-max bg-white shadow-lg rounded-xl border border-gray-200 p-4 hidden group-hover:block">
+                            <table className="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 border-b">Thể loại</th>
+                                        <th className="px-4 py-2 border-b">Số sách</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {categories.map((category) => (
+                                        <tr key={category.id}>
+                                            <td className="px-4 py-2 border-b">{category.name}</td>
+                                            <td className="px-4 py-2 border-b">{categoryCount[category.id] || 0}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
                     {/* Header */}
@@ -667,7 +731,7 @@ const Books = () => {
                                 </td>
                                 <td className="px-6 py-3 border-r border-gray-200">{book.pages}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{book.available_quantity}</td>
-                                <td className="px-6 py-3 border-r border-gray-200 break-words max-w-lg">{book.description}</td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words" style={{ minWidth: '400px' }}>{book.description}</td>
                                 <td className="px-6 py-3 border-gray-200 flex space-x-2">
                                     <button onClick={() => handleEditBook(book)} className="flex items-center px-4 py-2 shadow border rounded-full text-black hover:bg-gray-300">
                                         Sửa
@@ -683,16 +747,35 @@ const Books = () => {
                 </table>
             </div>
             <div className="mt-8 flex justify-center items-center space-x-2">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className={`px-4 py-2 rounded ${page === currentPage ? "bg-blue-500 text-white" : "bg-gray-300 hover:bg-gray-400"}`}
-                    >
-                        {page}
-                    </button>
-                ))}
+                {pagination().map((page, index) =>
+                    page === "prev" ? (
+                        <button
+                            key={index}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            className="px-4 py-2 bg-red-500 rounded-2xl text-white hover:bg-red-700"
+                        >
+                            Trước
+                        </button>
+                    ) : page === "next" ? (
+                        <button
+                            key={index}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            className="px-4 py-2 bg-red-500 rounded-2xl text-white hover:bg-red-700"
+                        >
+                            Sau
+                        </button>
+                    ) : (
+                        <button
+                            key={index}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "border-2 rounded-2xl bg-red-500 text-white" : " hover:bg-gray-200 border-2 rounded-2xl"}`}
+                        >
+                            {page}
+                        </button>
+                    )
+                )}
             </div>
+
 
         </div>
     );

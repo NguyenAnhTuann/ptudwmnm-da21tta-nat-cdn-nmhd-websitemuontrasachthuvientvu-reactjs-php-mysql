@@ -10,7 +10,7 @@ const BookList = () => {
     const [searchAuthor, setSearchAuthor] = useState("");
     const [searchPublisher, setSearchPublisher] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const booksPerPage = 10;
+    const booksPerPage = 12;
     const [showCategories, setShowCategories] = useState(false);
 
     const navigate = useNavigate();
@@ -26,6 +26,11 @@ const BookList = () => {
 
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
         const fetchBooks = async () => {
             try {
                 const response = await fetch(
@@ -34,7 +39,6 @@ const BookList = () => {
                 );
                 const data = await response.json();
 
-                // Kiểm tra nếu data không phải là mảng
                 if (Array.isArray(data)) {
                     setBooks(data);
                 } else {
@@ -43,7 +47,7 @@ const BookList = () => {
                 }
             } catch (error) {
                 console.error("Lỗi khi lấy danh sách sách:", error);
-                setBooks([]); // Gán books thành mảng rỗng nếu có lỗi
+                setBooks([]);
             }
         };
 
@@ -68,7 +72,6 @@ const BookList = () => {
     }, []);
 
 
-    // Lọc sách dựa trên tìm kiếm trước khi áp dụng phân trang
     const filteredBooks = books.filter((book) => {
         const titleMatch = book.title.toLowerCase().includes(searchTitle.toLowerCase());
         const authorMatch = book.author.toLowerCase().includes(searchAuthor.toLowerCase());
@@ -76,21 +79,17 @@ const BookList = () => {
         return titleMatch && authorMatch && publisherMatch;
     });
 
-    // Tính toán sách hiển thị theo trang
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
     const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
-    // Tính tổng số trang dựa trên danh sách đã lọc
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
 
-    // Xử lý thay đổi trang
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    // Tạo danh sách nút phân trang
     const pagination = () => {
         const pages = [];
         const startPage = Math.max(1, currentPage - 1);
@@ -106,7 +105,6 @@ const BookList = () => {
     };
 
 
-    // Tô vàng từ khóa tìm kiếm trong nội dung
     const highlightText = (text, highlight) => {
         if (!highlight) return text;
         const regex = new RegExp(`(${highlight})`, "gi");
@@ -121,14 +119,12 @@ const BookList = () => {
         );
     };
 
-    // Nút Reset: Xóa tất cả giá trị trong ô tìm kiếm
     const handleReset = () => {
         setSearchTitle("");
         setSearchAuthor("");
         setSearchPublisher("");
     };
 
-    // Slide
     const slideUrls = [
         "https://dlcorp.com.vn/wp-content/uploads/2020/12/book-library-1509787712731_2.jpg",
         "https://trangtuyensinh.com.vn/wp-content/uploads/2022/02/thumbnail-nganh-thong-tin-thu-vien-1608128640.jpg",
@@ -139,7 +135,6 @@ const BookList = () => {
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // Chuyển slide tự động
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
@@ -147,7 +142,6 @@ const BookList = () => {
         return () => clearInterval(timer);
     }, [slideUrls.length]);
 
-    // Hàm điều chỉnh slide
     const goToPreviousSlide = () => {
         setCurrentSlide((prevSlide) => (prevSlide - 1 + slideUrls.length) % slideUrls.length);
     };
@@ -160,7 +154,7 @@ const BookList = () => {
         <div
             className="bg-contain bg-no-repeat bg-center min-h-screen flex justify-center bg-white shadow-sm transition duration-300"
             style={{
-                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735644020/Logotimdothatlac_1_qdrlei.png')`,
+                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1736540786/Logotimdothatlac_15_dynqps.png')`,
             }}
         >
             <div className="container mx-auto px-8">
@@ -232,7 +226,7 @@ const BookList = () => {
                                         setCurrentPage(1);
                                         setShowCategories(false);
                                     }}
-                                    className="text-blue-500 font-semibold hover:underline"
+                                    className="text-blue-500 font-semibold"
                                 >
                                     Tất cả sách
                                 </button>
@@ -370,24 +364,33 @@ const BookList = () => {
                             page === "prev" ? (
                                 <button
                                     key={index}
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                    onClick={() => {
+                                        handlePageChange(currentPage - 1);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="px-4 py-2 bg-red-500 rounded-2xl text-white hover:bg-red-700"
                                 >
                                     Trước
                                 </button>
                             ) : page === "next" ? (
                                 <button
                                     key={index}
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                    onClick={() => {
+                                        handlePageChange(currentPage + 1);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="px-4 py-2 bg-red-500 rounded-2xl text-white hover:bg-red-700"
                                 >
                                     Sau
                                 </button>
                             ) : (
                                 <button
                                     key={index}
-                                    onClick={() => handlePageChange(page)}
-                                    className={`px-4 py-2 rounded ${page === currentPage ? "bg-blue-500 text-white" : "bg-gray-300 hover:bg-gray-400"
+                                    onClick={() => {
+                                        handlePageChange(page);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className={`px-4 py-2 rounded ${page === currentPage ? "border-2 rounded-2xl bg-red-500 text-white" : " hover:bg-gray-200 border-2 rounded-2xl"
                                         }`}
                                 >
                                     {page}
@@ -395,6 +398,7 @@ const BookList = () => {
                             )
                         )}
                     </div>
+
                 </main>
             </div>
         </div>

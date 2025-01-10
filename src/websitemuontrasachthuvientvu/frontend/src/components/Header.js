@@ -10,21 +10,25 @@ const Header = ({ user, setUser }) => {
     const [temperature, setTemperature] = useState('');
     const [loadingWeather, setLoadingWeather] = useState(true);
     const location = useLocation();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const handleLogout = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user && user.id) {
-            const storedBorrowLists = localStorage.getItem("borrowLists");
-            const allBorrowLists = storedBorrowLists ? JSON.parse(storedBorrowLists) : {};
-            delete allBorrowLists[user.id];
-            localStorage.setItem("borrowLists", JSON.stringify(allBorrowLists));
-        }
-
-        localStorage.removeItem("user");
-        setUser(null);
-        navigate("/");
+        setIsLoggingOut(true);
+        setTimeout(() => {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.id) {
+                const storedBorrowLists = localStorage.getItem("borrowLists");
+                const allBorrowLists = storedBorrowLists ? JSON.parse(storedBorrowLists) : {};
+                delete allBorrowLists[user.id];
+                localStorage.setItem("borrowLists", JSON.stringify(allBorrowLists));
+            }
+            localStorage.removeItem("user");
+            setUser(null);
+            setIsLoggingOut(false);
+            navigate("/");
+        }, 2000);
     };
-
+    
     const isAdminPath = location.pathname.startsWith("/admin");
     useEffect(() => {
         const fetchLocationAndWeather = async () => {
@@ -116,8 +120,9 @@ const Header = ({ user, setUser }) => {
                             onError={(e) => {
                                 e.target.src = "/image/default-logo.png";
                             }}
-                            onClick={() => navigate("/")}
+                            onClick={() => navigate(isAdminPath ? "/admin" : "/")}
                         />
+
                         {isAdminPath && (
                             <span className="text-2xl font-semibold ml-4 text-gray-800">
                                 Trang Quản Trị - Website Mượn Trả Sách Thư Viện TVU
@@ -127,6 +132,13 @@ const Header = ({ user, setUser }) => {
 
                     {/* Các nút điều hướng */}
                     <div className="flex items-center gap-4">
+                        {isLoggingOut && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-50">
+                                <div className="animate-spin rounded-full h-32 w-32 border-t-8 border-blue-500 mb-6"></div>
+                                <p className="text-white text-xl font-semibold animate-pulse">Đang thoát khỏi hệ thống, vui lòng đợi...</p>
+                            </div>
+                        )}
+
                         {user ? (
                             <>
                                 {!isAdminPath && (
@@ -155,10 +167,12 @@ const Header = ({ user, setUser }) => {
                                 <button
                                     onClick={handleLogout}
                                     className="flex items-center gap-2 bg-red-600 text-white border border-gray-300 hover:bg-red-700 py-2 px-4 rounded-3xl shadow-sm"
+                                    disabled={isLoggingOut}
                                 >
                                     <FontAwesomeIcon icon={faSignOutAlt} />
-                                    <span>Đăng xuất</span>
+                                    <span>{isLoggingOut ? "Đang đăng xuất..." : "Đăng xuất"}</span>
                                 </button>
+
                             </>
                         ) : (
                             <>

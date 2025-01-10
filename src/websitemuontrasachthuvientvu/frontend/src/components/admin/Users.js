@@ -7,7 +7,22 @@ const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState({ message: "", visible: false });
+    const [searchName, setSearchName] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const usersPerPage = 10;
 
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchName.toLowerCase())
+    );
+
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const [formData, setFormData] = useState({
         name: "",
@@ -376,7 +391,26 @@ const Users = () => {
                         Reset
                     </button>
                 </div>
+            </div>
 
+            <div className="mb-6 flex flex-wrap gap-6 items-center">
+                {/* Ô tìm kiếm */}
+                <input
+                    type="text"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    placeholder="🔍 Tìm kiếm theo tên người dùng..."
+                    className="w-[400px] px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                {/* Nút đặt lại */}
+                <button
+                    onClick={() => {
+                        setSearchName("");
+                    }}
+                    className="bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
             </div>
 
 
@@ -396,6 +430,8 @@ const Users = () => {
                                 "Số điện thoại",
                                 "Email",
                                 "Địa chỉ",
+                                "OTP",
+                                "Thời gian hết hạn OTP",
                                 "Thao tác",
                             ].map((header, index) => (
                                 <th
@@ -410,39 +446,27 @@ const Users = () => {
 
                     {/* Body */}
                     <tbody>
-                        {users.map((user, index) => (
+                        {currentUsers.map((user, index) => (
                             <tr
                                 key={user.id}
-                                className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                                    } hover:bg-blue-50`}
+                                className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-blue-50`}
                             >
                                 <td className="px-6 py-3 border-r border-gray-200">{user.id}</td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.name}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.date}
-                                </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.name}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.date}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.class}</td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.major}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.faculty}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.school}
-                                </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.major}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.faculty}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.school}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.phone}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.email}</td>
-                                <td className="px-6 py-3 border-r border-gray-200 break-words max-w-lg">
-                                    {user.address}
-                                </td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words " style={{ minWidth: '300px' }}>{user.address}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200 break-words " style={{ minWidth: '150px' }}>{user.otp || "Không có OTP"}</td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words " style={{ minWidth: '200px' }}>{user.otp_expiry || "Không có OTP"}</td>
                                 <td className="px-6 py-3 border-r border-gray-200 flex space-x-2">
                                     {/* Nút Sửa */}
                                     <button
                                         onClick={() => {
-                                            // Loại bỏ `otp` và `otp_expiry` khỏi đối tượng `user`
                                             const { otp, otp_expiry, ...rest } = user;
                                             setFormData(rest);
                                         }}
@@ -460,11 +484,23 @@ const Users = () => {
                                         Xóa
                                     </button>
                                 </td>
-
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
+                <div className="mt-8 flex justify-center items-center space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "bg-blue-500 text-white" : "bg-gray-300 hover:bg-gray-400"
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
             </div>
 
 

@@ -9,6 +9,25 @@ const Publishers = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: "", visible: false });
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const publishersPerPage = 20;
+    const [totalPublishers, setTotalPublishers] = useState(0);
+
+
+    const filteredPublishers = publishers.filter((publisher) =>
+        publisher.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const indexOfLastPublisher = currentPage * publishersPerPage;
+    const indexOfFirstPublisher = indexOfLastPublisher - publishersPerPage;
+    const currentPublishers = filteredPublishers.slice(indexOfFirstPublisher, indexOfLastPublisher);
+    const totalPages = Math.ceil(filteredPublishers.length / publishersPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const showNotification = (message) => {
         setNotification({ message, visible: true });
@@ -30,12 +49,14 @@ const Publishers = () => {
             const response = await fetch("http://localhost/websitemuontrasachthuvientvu/backend/admin/publishers/publishers.php");
             const result = await response.json();
             setPublishers(result);
+            setTotalPublishers(result.length);
         } catch (error) {
             console.error("Error fetching publishers data:", error);
         } finally {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchPublishers();
@@ -269,6 +290,26 @@ const Publishers = () => {
                 </div>
             </div>
 
+            <div className="mb-6 flex flex-wrap gap-6 items-center">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="🔍 Tìm kiếm theo tên nhà xuất bản..."
+                    className="w-[400px] px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <button
+                    onClick={() => setSearchTerm("")}
+                    className="bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
+            </div>
+            <div className="mb-8 p-8 bg-white shadow-2xl rounded-xl border border-gray-200">
+                <div className="text-lg font-bold text-gray-800">
+                    <span>Tổng số nhà xuất bản: {totalPublishers}</span>
+                </div>
+            </div>
 
 
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
@@ -289,7 +330,7 @@ const Publishers = () => {
 
                     {/* Body */}
                     <tbody>
-                        {publishers.map((publisher, index) => (
+                        {currentPublishers.map((publisher, index) => (
                             <tr
                                 key={publisher.id}
                                 className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
@@ -321,6 +362,19 @@ const Publishers = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="mt-8 flex justify-center items-center space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "border-2 rounded-2xl bg-red-500 text-white" : " hover:bg-gray-200 border-2 rounded-2xl"
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
+
             </div>
 
         </div>

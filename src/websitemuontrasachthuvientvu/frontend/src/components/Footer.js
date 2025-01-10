@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className="bg-white text-gray-700 py-8 px-6">
             {/* Phần mới thêm */}
-            <div className="bg-gray-400 text-white py-6">
+            <div className="bg-gray-400 text-white py-6 rounded-3xl">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                     {/* Logo và ứng dụng */}
                     <div className="flex flex-col items-center">
@@ -80,19 +80,19 @@ const Footer = () => {
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 1
                             </span>
-                            <span>Nguyễn Anh Tuấn - 110121123 - DA21TTA</span>
+                            <h4>Nguyễn Anh Tuấn - 110121123 - DA21TTA</h4>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 2
                             </span>
-                            <span>Cao Duy Nhân - 110121070 - DA21TTA</span>
+                            <h4>Cao Duy Nhân - 110121070 - DA21TTA</h4>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 3
                             </span>
-                            <span>Nguyễn Minh Hải Đăng - 110121181 - DA21TTA</span>
+                            <h4>Nguyễn Minh Hải Đăng - 110121181 - DA21TTA</h4>
                         </li>
                     </ul>
                 </div>

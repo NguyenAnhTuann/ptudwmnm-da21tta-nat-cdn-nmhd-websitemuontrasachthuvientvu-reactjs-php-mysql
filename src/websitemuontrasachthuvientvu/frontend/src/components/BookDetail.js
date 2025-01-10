@@ -48,7 +48,7 @@ const BookDetail = () => {
         <div
             className="p-10 min-h-screen flex items-center justify-center"
             style={{
-                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735325448/1_x7mrol.jpg')`,
+                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1736540786/Logotimdothatlac_15_dynqps.png')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}

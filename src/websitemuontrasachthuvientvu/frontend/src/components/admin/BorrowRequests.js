@@ -341,8 +341,8 @@ const BorrowRequests = () => {
                                                     "ID sách",
                                                     "Hình ảnh",
                                                     "Tên sách",
-                                                    "Số lượng",
                                                     "Tác giả",
+                                                    "Số lượng",
                                                 ].map((header, index) => (
                                                     <th
                                                         key={index}
@@ -372,8 +372,8 @@ const BorrowRequests = () => {
                                                     <td className="border border-gray-300 px-4 py-2 text-center font-semibold">
                                                         {book.title}
                                                     </td>
-                                                    <td className="border border-gray-300 px-4 py-2 text-center">{book.quantity}</td>
                                                     <td className="border border-gray-300 px-4 py-2 text-center">{book.author}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 text-center">{book.quantity}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
